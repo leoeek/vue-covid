@@ -32,3 +32,6 @@ yarn install
 ```sh
 yarn serve
 ```
+
+![Image da tela de estados](https://github.com/leoeek/vue-covid/blob/main/img1.png?raw=true)
+![Image da tela de cidades](https://github.com/leoeek/vue-covid/blob/main/img2.png?raw=true)
