@@ -1,6 +1,8 @@
 # vue-covid
 ## _Treinando um pouco da maravilha chamado: Vue3_
 
+Publicado em: https://60677623434b8e00dae68aea--reverent-golick-91ec5a.netlify.app/
+
 Este projeto utiliza a API do https://brasil.io/covid19/ que faz o maravilhoso trabalho de catalogar e disponiblizar as informações do Covid19 por todo país.
 
 ## Funcionalidades
@@ -8,16 +10,13 @@ Este projeto utiliza a API do https://brasil.io/covid19/ que faz o maravilhoso t
 - Pesquisa por Estados
 - Pesquisa por Cidades
 
-obs: A ideia é poder criar em breve um comparativo entre duas cidades que forem selecionadas.
+obs: A ideia é poder criar em breve um comparativo entre duas cidades que forem selecionadas, e também uma API em NodeJS.
 
 ## Tecnologia
-
-Dillinger uses a number of open source projects to work properly:
 
 - VueJS 3
 - Tailwindcss
 - Axios
-- NodeJS (em breve, quando for criado a API do projeto)
 
 ## Instalação
 É necessario acessar o site https://brasil.io/covid19/ para criar um token de acesso a API.
