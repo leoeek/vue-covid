@@ -5,11 +5,15 @@
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="https://www.un.org/sites/un2.un.org/files/covid-19.svg" alt="Workflow">
+              <img class="h-8 w-8" src="https://www.un.org/sites/un2.un.org/files/covid-19.svg" alt="Convid 19">
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
-                <a @click="() => router.push({ name: 'Home' })" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer">Home</a>
+                <a
+                @click="handleHome"
+                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                title="Ir para home"
+                >Home</a>
               </div>
             </div>
           </div>
@@ -20,7 +24,11 @@
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class="md:hidden" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+          <a
+          @click="handleHome"
+          class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium cursor-pointer"
+          title="Ir para home"
+          >Home</a>
         </div>
       </div>
     </nav>
@@ -34,8 +42,14 @@ import { useRouter } from 'vue-router'
 export default {
   setup () {
     const router = useRouter()
+
+    function handleHome () {
+      router.push({ name: 'Home' })
+    }
+
     return {
-      router
+      router,
+      handleHome
     }
   }
 }

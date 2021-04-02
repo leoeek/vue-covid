@@ -32,7 +32,6 @@
 import { useRouter } from 'vue-router'
 import Icon from '@/components/Icon'
 import palette from '@/../palette'
-import { reactive } from '@vue/reactivity'
 
 export default {
   components: {
@@ -42,15 +41,9 @@ export default {
   setup () {
     const router = useRouter()
 
-    const state = reactive({
-      isLoading: false
-    })
-
     async function getDetail (uf) {
       try {
-        state.isLoading = true
         router.push(`/detail/${uf.key}`)
-        state.isLoading = false
       } catch (error) {
 
       }

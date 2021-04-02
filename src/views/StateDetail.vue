@@ -14,17 +14,9 @@
 
           <div class="divide-y divide-gray-100">
 
-            <p
-            class="text-center"
-            v-if="isLoading"
-            >Carregando...</p>
-            <List v-else>
-              <list-item
-              v-for="(item, index) in state.detailState"
-              :key="index"
-              :detailState="item"
-              />
-            </List>
+            <List
+            :id="state.id"
+            :dt="state.dt" />
 
           </div>
       </div>
@@ -35,19 +27,17 @@
 <script>
 import { reactive } from '@vue/reactivity'
 import { useRoute } from 'vue-router'
-import { onMounted } from 'vue'
-import services from '@/services'
 import List from '@/components/City/List'
-import ListItem from '@/components/City/ListItem'
-import { formatDate } from '@/utils/date'
+// import { formatDate } from '@/utils/date'
 export default {
   components: {
-    List, ListItem
+    List
   },
   setup () {
     const router = useRoute()
     const state = reactive({
       id: null,
+      dt: '',
       isLoading: false,
       detailState: [],
       pagination: {
@@ -58,30 +48,7 @@ export default {
     })
 
     state.id = router.params.id
-    state.dt = formatDate()
-
-    async function getDetail ({ id, dt }) {
-      try {
-        state.isLoading = true
-
-        const { data } = await services.cases.getDetail({
-          ...state.pagination,
-          date: dt,
-          state: id
-        })
-
-        console.log('data', data.results)
-        state.detailState = data.results
-
-        state.isLoading = false
-      } catch (error) {
-
-      }
-    }
-
-    onMounted(() => {
-      getDetail(state)
-    })
+    state.dt = '2021-04-01'// formatDate()
 
     return {
       state
