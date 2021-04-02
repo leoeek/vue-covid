@@ -28,7 +28,7 @@
 import { reactive } from '@vue/reactivity'
 import { useRoute } from 'vue-router'
 import List from '@/components/City/List'
-// import { formatDate } from '@/utils/date'
+// import { currentDate } from '@/utils/date'
 export default {
   components: {
     List
@@ -48,7 +48,7 @@ export default {
     })
 
     state.id = router.params.id
-    state.dt = '2021-04-01'// formatDate()
+    state.dt = '2021-04-01'// currentDate()
 
     return {
       state
