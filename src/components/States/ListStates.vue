@@ -1,9 +1,9 @@
 <template>
 
-<section class="px-4 sm:px-6 lg:px-4 xl:px-6 pt-4 pb-4 sm:pb-6 lg:pb-4 xl:pb-6 space-y-4">
+<section class="px-4 sm:px-6 lg:px-4 xl:px-6 pt-0 pb-4 sm:pb-6 lg:pb-4 xl:pb-6 space-y-4">
 
   <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6 bg-gray-300">
+    <div class="px-4 py-2 sm:px-6 bg-gray-300">
 
       <form-search
       title="Filtre pelo estado"
