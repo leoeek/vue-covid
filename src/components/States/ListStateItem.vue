@@ -15,10 +15,11 @@
         </div>
         <div class="">
           <dt class="sr-only">Users</dt>
-          <dd class="flex justify-end sm:justify-end lg:justify-end xl:justify-end -space-x-2">
-            <icon
+          <dd class="flex justify-end sm:justify-end lg:justify-end xl:justify-end -space-x-2 font-semibold">
+            <!-- <icon
             class="w-7 h-7 rounded-full bg-white border-2 border-white"
-            name="chevron-down" size="24" :color="brandColors.blue" />
+            name="chevron-down" size="24" :color="brandColors.blue" /> -->
+            &gt;&gt;
           </dd>
         </div>
       </dl>
@@ -30,13 +31,10 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import Icon from '@/components/Icon'
+// import Icon from '@/components/Icon'
 import palette from '@/../palette'
 
 export default {
-  components: {
-    Icon
-  },
   props: ['uf'],
   setup () {
     const router = useRouter()

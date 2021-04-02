@@ -4,12 +4,9 @@
 
   <main>
     <div class="max-w-2xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="px-4 py-6 sm:px-0">
-
-          <div class="divide-y divide-gray-100">
-
+      <div class="px-4 py-6 sm:px-0 ">
+          <div class="divide-y divide-gray-100 ">
             <list-states />
-
           </div>
       </div>
     </div>

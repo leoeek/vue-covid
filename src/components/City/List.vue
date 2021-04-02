@@ -2,6 +2,9 @@
   <div>
 
     <div class="flex flex-col">
+
+      <p class="text-right p-4 font-bold cursor-pointer hover:text-blue-500" title="Voltar para escolha de estados"><a @click="handleHome">Voltar</a></p>
+
       <div class="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -9,38 +12,29 @@
             <p
             class="text-center"
             v-if="state.isLoading">Carregando....</p>
+
             <template v-else>
-              <form-search
-              title="Filtre pela cidade"
-              v-model:search="state.searchCity"
-              />
-              <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Estado
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="px-0 py-0 sm:px-0">
 
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-
-                  <list-item
-                    v-for="(item, index) in filteredList"
-                    :key="index"
-                    :detailState="item"
+                  <div class="px-2 py-2 sm:px-2 bg-gray-300">
+                    <form-search
+                    title="Filtre pela cidade"
+                    v-model:search="state.searchCity"
                     />
+                  </div>
 
-                </tbody>
-              </table>
+                  <div>
+                    <list-item
+                      v-for="(item, index) in filteredList"
+                      :key="index"
+                      :detailState="item"
+                      />
+                  </div>
+
+                </div>
+              </div>
             </template>
           </div>
         </div>
@@ -52,9 +46,11 @@
 
 <script>
 import { computed, onMounted, reactive, toRefs } from '@vue/runtime-core'
+import { useRouter } from 'vue-router'
 import FormSearch from '../FormSearch'
 import ListItem from '@/components/City/ListItem'
 import services from '@/services'
+import { removeSpecial } from '@/utils/string'
 
 export default {
   props: {
@@ -66,6 +62,7 @@ export default {
     ListItem
   },
   setup (props) {
+    const router = useRouter()
     const state = reactive({
       isLoading: false,
       id: null,
@@ -85,7 +82,10 @@ export default {
 
     const filteredList = computed(() => {
       return state.detailState.filter(item => {
-        return item.city?.toLowerCase().includes(state.searchCity.toLowerCase())
+        const val = removeSpecial(item.city?.toLowerCase())
+        const find = removeSpecial(state.searchCity)
+
+        return val?.includes(find.toLowerCase())
       })
     })
 
@@ -106,13 +106,18 @@ export default {
       }
     }
 
+    function handleHome () {
+      router.push({ name: 'Home' })
+    }
+
     onMounted(() => {
       getDetail(state)
     })
 
     return {
       state,
-      filteredList
+      filteredList,
+      handleHome
     }
   }
 }
