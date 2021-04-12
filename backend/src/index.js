@@ -7,8 +7,8 @@ const DEFAULT_TYPE = {
 }
 
 const handleError = response => {
+  console.log('oi')
   return error => {
-
       console.error('A casa caiuuuu***', error)
       response.writeHead(500, DEFAULT_TYPE)
       response.write(JSON.stringify({ error: 'Internal Server Error!' }))
@@ -17,20 +17,19 @@ const handleError = response => {
   }
 }
 
-const handler = function (request, response) {
+const handler = (request, response) => {
   const { url, method } = request
   const [first, route, id] = url.split('/')
   request.queryString = { id: isNaN(id) ? id : Number(id) }
 
   const key = `/${route}:${method.toLowerCase()}`
 
-  const chosen = routes[key] || routes.default
-
   response.writeHead(200, DEFAULT_TYPE)
 
-  return chosen(request, response).catch(handleError(response))
+  const chosen = routes[key] || routes.default
+  return chosen(request, response) //.catch(handleError(response))
 }
 
 const app = http.createServer(handler).listen(PORT, () => {
-  console.log(`Estou rodando sim ;)`)
+  console.log(`Estou rodando na porta ${PORT} sim ;)`)
 })
