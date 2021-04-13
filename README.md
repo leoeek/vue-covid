@@ -17,20 +17,84 @@ obs: A ideia é poder criar em breve um comparativo entre duas cidades que forem
 - VueJS 3
 - Tailwindcss
 - Axios
+- SQLite
 
 ## Instalação
-É necessario acessar o site https://brasil.io/covid19/ para criar um token de acesso a API.
-Feito isso, adicione o token no arquivo .env.local
+É necessario acessar o site https://brasil.io/dataset/covid19/files/ para baixar o dataset com as informações completas (caso_full.csv.gz).
+Feito isso, o processo para importar o CSV no SQLite é muito simples (muito mesmo):
+- Extraia o arquivo caso_full.csv.gz (o resultado vai ser um arquivo caso_full.csv).
+- Acesse o diretório onde foi extraído o arquivo pelo terminal (para ficar mais fácil se localizar).
+- Execute o comando sqlite3:
+```sh
+sqlite3 covid19.db
+```
+- O retorno deve ser algo bem próximo a isso
+```sh
+SQLite version 3.32.2 2020-06-04 12:58:43
+Enter ".help" for usage hints.
+sqlite>
+```
+- Em seguida entre no mod csv com o comando:
+```sh
+sqlite> .mode csv
+sqlite> .import caso_full.csv casos
+```
+- Para conferir a estrutura do arquivo, use o comando:
+```sh
+sqlite> .schema casos
 
-## Setup
+CREATE TABLE casos(
+  "city" TEXT,
+  "city_ibge_code" TEXT,
+  "date" TEXT,
+  "epidemiological_week" TEXT,
+  "estimated_population" TEXT,
+  "estimated_population_2019" TEXT,
+  "is_last" TEXT,
+  "is_repeated" TEXT,
+  "last_available_confirmed" TEXT,
+  "last_available_confirmed_per_100k_inhabitants" TEXT,
+  "last_available_date" TEXT,
+  "last_available_death_rate" TEXT,
+  "last_available_deaths" TEXT,
+  "order_for_place" TEXT,
+  "place_type" TEXT,
+  "state" TEXT,
+  "new_confirmed" TEXT,
+  "new_deaths" TEXT
+);
+```
+- ou
+```sh
+sqlite> select count(*) from casos;
+1871200
+```
+- Para sair, use o comando:
+```sh
+.quit
+```
+Pronto! Feito isso copie o covid19.db para a raiz do diretório backend para que a API consiga acessar sem problemas ;)
+
+## Setup Front
 ```sh
 yarn install
 ```
-
-## Run
+## Run Front
 ```sh
 yarn serve
 ```
 
 ![Image da tela de estados](https://github.com/leoeek/vue-covid/blob/main/img1.png?raw=true)
 ![Image da tela de cidades](https://github.com/leoeek/vue-covid/blob/main/img2.png?raw=true)
+
+
+## Setup Backend
+```sh
+cd backend
+npm install
+```
+## Run Backend
+```sh
+cd backend
+npm run dev
+```
