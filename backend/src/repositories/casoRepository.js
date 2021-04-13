@@ -20,10 +20,13 @@ export default class CasoRepository {
     if (!this.db) await this.open()
 
     const { state } = filter
-    const rows = await this.db.all(`SELECT * FROM casos WHERE state = '${state}' ORDER BY city LIMIT 40`)
+
+    const lastDate = await this.db.all('SELECT MAX(date) AS date FROM casos')
+    console.log('dataeeee', lastDate[0].date)
+    const rows = await this.db.all(`SELECT * FROM casos WHERE state = '${state}' AND date = '${lastDate[0].date}' AND city <> '' ORDER BY city`)
 
     const dados = {
-      dados: rows
+      results: rows
     }
     return dados
   }

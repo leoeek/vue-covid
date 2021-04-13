@@ -5,10 +5,10 @@ const casoService = Factory.generateInstance()
 const routes = {
   '/teste:get': (request, response) => {
 
-    const dados = {
+    const data = {
       msg: 'Olá mundo'
     }
-    response.write(JSON.stringify(dados))
+    response.write(JSON.stringify(data))
     return response.end()
   },
 
@@ -18,9 +18,9 @@ const routes = {
     const filter = {
       state: id.toUpperCase()
     }
-    const dados = await casoService.getAll(filter)
+    const data = await casoService.getAll(filter)
 
-    response.write(JSON.stringify(dados))
+    response.write(JSON.stringify(data))
     return response.end()
   },
 

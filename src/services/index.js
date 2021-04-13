@@ -2,7 +2,8 @@ import axios from 'axios'
 import Cases from './cases'
 
 const API_ENV = {
-  production: 'https://api.brasil.io/v1/dataset/covid19',
+  // production: 'https://api.brasil.io/v1/dataset/covid19',
+  production: 'http://localhost:3000',
   token: process.env.VUE_APP_TOKEN
 }
 
@@ -11,7 +12,7 @@ const httpClient = axios.create({
 })
 
 httpClient.interceptors.request.use(config => {
-  config.headers.common.Authorization = `Token ${API_ENV.token}`
+  // config.headers.common.Authorization = `Token ${API_ENV.token}`
 
   return config
 })

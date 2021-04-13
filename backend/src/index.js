@@ -1,4 +1,5 @@
 import http from 'http'
+import cors from 'cors'
 import routes from './routes/router.js'
 
 const PORT = 3000
@@ -7,7 +8,6 @@ const DEFAULT_TYPE = {
 }
 
 const handleError = response => {
-  console.log('oi')
   return error => {
       console.error('A casa caiuuuu***', error)
       response.writeHead(500, DEFAULT_TYPE)
@@ -24,6 +24,7 @@ const handler = (request, response) => {
 
   const key = `/${route}:${method.toLowerCase()}`
 
+  response.setHeader("Access-Control-Allow-Origin", "*")
   response.writeHead(200, DEFAULT_TYPE)
 
   const chosen = routes[key] || routes.default

@@ -13,9 +13,9 @@ export default httpClient => ({
     const response = await httpClient.get('/caso/data', { params: query })
     return { data: response.data }
   },
-  getDetail: async ({ limit, offset, state, date } = defaultPagination) => {
-    const query = { limit, offset, state, date }
-    const response = await httpClient.get('/caso_full/data', { params: query })
-    return { data: response.data }
+  getDetail: async ({ state } = defaultPagination) => {
+    // const query = { limit, offset, state, date }
+    const { data } = await httpClient.get(`/casos/${state}`)
+    return { data }
   }
 })

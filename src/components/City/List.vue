@@ -98,7 +98,6 @@ export default {
           date: dt,
           state: id
         })
-
         state.detailState = data.results
         state.isLoading = false
       } catch (error) {
