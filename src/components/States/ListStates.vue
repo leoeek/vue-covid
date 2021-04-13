@@ -1,58 +1,70 @@
 <template>
 
-<section class="px-4 sm:px-6 lg:px-4 xl:px-6 pt-0 pb-4 sm:pb-6 lg:pb-4 xl:pb-6 space-y-4">
+<section>
 
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-2 sm:px-6 bg-gray-300">
+    <form-search
+    title="Qual cidade deseja pesquisar?"
+    :states="state.states"
+    v-model:search="state.searchState"
+    />
 
-      <form-search
-      title="Filtre pelo estado"
-      v-model:search="state.searchState"
-      />
+    <div
+    v-if="state.isLoading"
+    class="loading">Pesquisando...</div>
+
+    <div
+    v-show="!state.isLoading && state.listCity.length > 0"
+    class="results"
+    >
+
+      <div
+        v-for="(item, index) in state.listCity"
+        :key="item.city_ibge_code"
+        :data-key="index"
+        class="accordionItem"
+        :class="{ open: index === 0, close: index > 0 }"
+        @click="handleAccordion(index)"
+      >
+        <h2 class="accordionItemHeading">  {{ item.city }} - {{ item.state }}</h2>
+        <div class="accordionItemContent">
+          <p><b>População:</b> {{ item.estimated_population }}</p>
+
+          <p><b>Confirmados:</b> {{ item.last_available_confirmed }}</p>
+
+          <p><b>Óbitos:</b> {{ item.last_available_deaths }}</p>
+
+          <p><i>Atualizado em {{ item.last_available_date }}</i></p>
+        </div>
+      </div>
 
     </div>
-
-    <ul class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-4 p-4">
-      <list-state-item
-          v-for="uf in filteredList"
-          :key="uf.key"
-          :uf="uf"
-        />
-    </ul>
-
-  </div>
 
 </section>
 
 </template>
 
 <script>
-import { computed, reactive } from '@vue/runtime-core'
-import ListStateItem from './ListStateItem.vue'
+import { reactive, watchEffect } from '@vue/runtime-core'
 import FormSearch from '../FormSearch'
+import services from '@/services'
 
 export default {
   components: {
-    ListStateItem,
     FormSearch
   },
   setup () {
     const state = reactive({
       searchState: '',
+      isLoading: false,
       uf: [],
       cases: [],
       states: [],
+      listCity: [],
       pagination: {
         limit: 20,
         offset: 0,
         total: 0
       }
-    })
-
-    const filteredList = computed(() => {
-      return state.states.filter(uf => {
-        return uf.value.toLowerCase().includes(state.searchState.toLowerCase())
-      })
     })
 
     state.states = [
@@ -85,10 +97,131 @@ export default {
       { key: 'TO', value: 'Tocantins' }
     ]
 
+    watchEffect(() => {
+      if (state.searchState) {
+        const city = state.searchState
+        findCity(city)
+      }
+    })
+
+    async function findCity (city) {
+      try {
+        state.isLoading = true
+
+        const { data } = await services.cases.findCity({
+          ...state.pagination,
+          city: city
+        })
+        state.listCity = data.results
+        state.isLoading = false
+      } catch (error) {
+        console.log('erro', error)
+      }
+    }
+
+    function handleAccordion (index) {
+      const item = document.querySelectorAll(`div[data-key='${index}']`)
+      if (item[0].className === 'accordionItem open') {
+        item[0].className = 'accordionItem close'
+      } else {
+        item[0].className = 'accordionItem open'
+      }
+    }
+
     return {
       state,
-      filteredList
+      handleAccordion
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.loading {
+  text-align: center;
+  color: #FFF;
+  margin-top: 20px;
+}
+section {
+  max-width: 750px;
+  width: 100%;
+}
+.results {
+  overflow: auto;
+  padding: 20px;
+  height: 100%;
+  margin-top: 20px;
+  background-color: #FFF;
+  box-shadow: 0 8px 20px 0 rgb(0 0 0 / 15%);
+  border-radius: 3px;
+
+  .accordionItem {
+    float: left;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .accordionItemHeading {
+    cursor: pointer;
+    margin: 0px 0px 10px 0px;
+    padding: 10px;
+    background: #bdc3c7;
+    color: #fff;
+    width: 100%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  .close .accordionItemContent {
+    height: 0px;
+    transition: height 1s ease-out;
+    -webkit-transform: scaleY(0);
+    -o-transform: scaleY(0);
+    -ms-transform: scaleY(0);
+    transform: scaleY(0);
+    float: left;
+    display: block;
+  }
+  .open .accordionItemContent {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    width: 100%;
+    margin: 0px 0px 10px 0px;
+    display: block;
+    -webkit-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    transform: scaleY(1);
+    -webkit-transform-origin: top;
+    -o-transform-origin: top;
+    -ms-transform-origin: top;
+    transform-origin: top;
+
+    -webkit-transition: -webkit-transform 0.4s ease-out;
+    -o-transition: -o-transform 0.4s ease;
+    -ms-transition: -ms-transform 0.4s ease;
+    transition: transform 0.4s ease;
+    box-sizing: border-box;
+  }
+
+  .open .accordionItemHeading {
+    margin: 0px;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #2980b9;
+    color: #FFF;
+  }
+}
+</style>

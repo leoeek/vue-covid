@@ -17,5 +17,12 @@ export default httpClient => ({
     // const query = { limit, offset, state, date }
     const { data } = await httpClient.get(`/casos/${state}`)
     return { data }
+  },
+  findCity: async ({ city } = defaultPagination) => {
+    const query = {
+      city: city
+    }
+    const { data } = await httpClient.get('/casos', { params: query })
+    return { data }
   }
 })

@@ -6,4 +6,8 @@ export default class CasoService {
   async getAll(filter) {
     return this.casoRepository.getAll(filter)
   }
+
+  async findCity(filter) {
+    return this.casoRepository.findCity(filter)
+  }
 }

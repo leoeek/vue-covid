@@ -31,5 +31,24 @@ export default class CasoRepository {
     return dados
   }
 
+  async findCity(filter) {
+    if (!this.db) await this.open()
+
+    const { city, state } = filter
+
+    let query = ` AND city LIKE '${city}%' `
+    if (state) {
+      query += ` AND state = '${state}' `
+    }
+
+    const lastDate = await this.db.all('SELECT MAX(date) AS date FROM casos')
+    const rows = await this.db.all(`SELECT * FROM casos WHERE date = '${lastDate[0].date}' ${query} ORDER BY city, state `)
+
+    const dados = {
+      results: rows
+    }
+    return dados
+  }
+
 }
 
