@@ -73,16 +73,28 @@ sqlite> select count(*) from casos;
 ```sh
 .quit
 ```
+Pronto! Feito isso copie o covid19.db para a raiz do diretório backend para que a API consiga acessar sem problemas ;)
 
-## Setup
+## Setup Front
 ```sh
 yarn install
 ```
-
-## Run
+## Run Front
 ```sh
 yarn serve
 ```
 
 ![Image da tela de estados](https://github.com/leoeek/vue-covid/blob/main/img1.png?raw=true)
 ![Image da tela de cidades](https://github.com/leoeek/vue-covid/blob/main/img2.png?raw=true)
+
+
+## Setup Backend
+```sh
+cd backend
+npm install
+```
+## Run Backend
+```sh
+cd backend
+npm run dev
+```
