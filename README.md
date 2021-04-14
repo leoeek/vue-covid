@@ -85,8 +85,11 @@ yarn install
 yarn serve
 ```
 
-![Image da tela de estados](https://github.com/leoeek/vue-covid/blob/main/img1.png?raw=true)
-![Image da tela de cidades](https://github.com/leoeek/vue-covid/blob/main/img2.png?raw=true)
+![Image da tela padrão](https://github.com/leoeek/vue-covid/blob/main/img1.png?raw=true)
+
+![Image da tela responsiva](https://github.com/leoeek/vue-covid/blob/main/img2.png?raw=true)
+
+![Image da tela filtrando](https://github.com/leoeek/vue-covid/blob/main/img3.png?raw=true)
 
 
 ## Setup Backend
