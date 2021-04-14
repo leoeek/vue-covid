@@ -91,6 +91,8 @@ yarn serve
 
 ![Image da tela filtrando](https://github.com/leoeek/vue-covid/blob/main/img3.png?raw=true)
 
+![Video utilizando o filtro e responsividade](https://github.com/leoeek/vue-covid/blob/main/vue-covid19.mp4?raw=true)
+
 
 ## Setup Backend
 ```sh
