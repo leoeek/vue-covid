@@ -15,9 +15,10 @@ obs: A ideia é poder criar em breve um comparativo entre duas cidades que forem
 ## Tecnologia
 
 - VueJS 3
-- Tailwindcss
 - Axios
 - SQLite
+- NodeJS
+- Express
 
 ## Instalação
 É necessario acessar o site https://brasil.io/dataset/covid19/files/ para baixar o dataset com as informações completas (caso_full.csv.gz).
