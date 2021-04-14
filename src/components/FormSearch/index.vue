@@ -1,11 +1,12 @@
 <template>
   <form v-on:submit.prevent="">
     <div class="col-1">
-      <select>
-        <option>Estados</option>
+      <select id="state">
+        <option value="">Estados</option>
         <option
         v-for="item in states"
         :key="item.key"
+        :value="item.key"
         >{{ item.value }}</option>
       </select>
     </div>
@@ -14,10 +15,9 @@
       <input
       class=""
       type="text"
-      id="inputSearch"
+      id="city"
       :aria-label="title"
       :placeholder="title"
-      :value="search"
       />
     </div>
 
@@ -38,14 +38,21 @@
 export default {
   props: {
     states: Array,
-    search: String,
+    search: Object,
     title: String
   },
   emits: ['update:search'],
   setup (props, context) {
     function handleSearch () {
-      const input = document.getElementById('inputSearch')
-      context.emit('update:search', input.value)
+      const city = document.getElementById('city')
+      const uf = document.getElementById('state')
+
+      const filter = {
+        city: city.value,
+        uf: uf.value
+      }
+
+      context.emit('update:search', filter)
     }
 
     return {

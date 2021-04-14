@@ -18,9 +18,12 @@ export default httpClient => ({
     const { data } = await httpClient.get(`/casos/${state}`)
     return { data }
   },
-  findCity: async ({ city } = defaultPagination) => {
+  findCity: async ({ city, state } = defaultPagination) => {
     const query = {
       city: city
+    }
+    if (state) {
+      query.state = state
     }
     const { data } = await httpClient.get('/casos', { params: query })
     return { data }

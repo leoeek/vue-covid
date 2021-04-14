@@ -14,7 +14,11 @@
 
     <div
     v-if="state.noResult"
-    class="no-result">Nenhum resultado encrado :(</div>
+    class="no-result">Nenhum resultado encontrado :#</div>
+
+    <div
+    v-if="state.error"
+    class="no-result">Eita! Erro ao realizar pesquisa :(</div>
 
     <div
     v-show="!state.isLoading && state.listCity.length > 0"
@@ -31,13 +35,13 @@
       >
         <h2 class="accordionItemHeading">  {{ item.city }} - {{ item.state }}</h2>
         <div class="accordionItemContent">
-          <p><b>População:</b> {{ item.estimated_population }}</p>
+          <p><b>População:</b> {{ new Intl.NumberFormat('pt-br').format(item.estimated_population) }}</p>
 
-          <p><b>Confirmados:</b> {{ item.last_available_confirmed }}</p>
+          <p><b>Confirmados:</b> {{ new Intl.NumberFormat('pt-br').format(item.last_available_confirmed) }}</p>
 
-          <p><b>Óbitos:</b> {{ item.last_available_deaths }}</p>
+          <p><b>Óbitos:</b> {{ new Intl.NumberFormat('pt-br').format(item.last_available_deaths) }}</p>
 
-          <p><i>Atualizado em {{ item.last_available_date }}</i></p>
+          <p><i>Atualizado em {{ formatDate(item.last_available_date) }}</i></p>
         </div>
       </div>
 
@@ -51,6 +55,7 @@
 import { reactive, watchEffect } from '@vue/runtime-core'
 import FormSearch from '../FormSearch'
 import services from '@/services'
+import { formatDate } from '@/utils/date.js'
 
 export default {
   components: {
@@ -58,9 +63,10 @@ export default {
   },
   setup () {
     const state = reactive({
-      searchState: '',
+      searchState: {},
       isLoading: false,
       noResult: false,
+      error: false,
       uf: [],
       cases: [],
       states: [],
@@ -103,25 +109,28 @@ export default {
     ]
 
     watchEffect(() => {
-      if (state.searchState) {
-        const city = state.searchState
-        findCity(city)
+      if (state.searchState.city) {
+        findCity(state.searchState)
       }
     })
 
-    async function findCity (city) {
+    async function findCity ({ city, uf }) {
       try {
+        state.error = false
         state.isLoading = true
         state.noResult = false
 
         const { data } = await services.cases.findCity({
           ...state.pagination,
-          city: city
+          city: city,
+          state: uf
         })
         state.listCity = data.results
         state.noResult = data.results.length === 0
         state.isLoading = false
       } catch (error) {
+        state.isLoading = false
+        state.error = true
         console.log('erro', error)
       }
     }
@@ -137,7 +146,8 @@ export default {
 
     return {
       state,
-      handleAccordion
+      handleAccordion,
+      formatDate
     }
   }
 }
