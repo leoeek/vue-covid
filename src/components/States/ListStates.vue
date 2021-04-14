@@ -13,6 +13,10 @@
     class="loading">Pesquisando...</div>
 
     <div
+    v-if="state.noResult"
+    class="no-result">Nenhum resultado encrado :(</div>
+
+    <div
     v-show="!state.isLoading && state.listCity.length > 0"
     class="results"
     >
@@ -56,6 +60,7 @@ export default {
     const state = reactive({
       searchState: '',
       isLoading: false,
+      noResult: false,
       uf: [],
       cases: [],
       states: [],
@@ -107,12 +112,14 @@ export default {
     async function findCity (city) {
       try {
         state.isLoading = true
+        state.noResult = false
 
         const { data } = await services.cases.findCity({
           ...state.pagination,
           city: city
         })
         state.listCity = data.results
+        state.noResult = data.results.length === 0
         state.isLoading = false
       } catch (error) {
         console.log('erro', error)
@@ -137,10 +144,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.loading {
+@media screen and (max-width: 766px) {
+  .results {
+    box-sizing: border-box;
+    width: 90% !important;
+    min-width: 360px;
+    margin: auto;
+  }
+}
+
+.loading, .no-result {
   text-align: center;
   color: #FFF;
   margin-top: 20px;
+}
+.no-result {
+  font-size: 18px;
 }
 section {
   max-width: 750px;
@@ -149,7 +168,6 @@ section {
 .results {
   overflow: auto;
   padding: 20px;
-  height: 100%;
   margin-top: 20px;
   background-color: #FFF;
   box-shadow: 0 8px 20px 0 rgb(0 0 0 / 15%);

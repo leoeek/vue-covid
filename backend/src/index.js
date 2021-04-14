@@ -3,7 +3,7 @@ import cors from 'cors'
 import routes from './routes/router.js'
 
 const app = express()
-const PORT = 3000
+const PORT = 3400
 const DEFAULT_TYPE = {
   'Content-Type': 'application/json'
 }

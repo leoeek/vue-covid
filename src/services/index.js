@@ -3,7 +3,8 @@ import Cases from './cases'
 
 const API_ENV = {
   // production: 'https://api.brasil.io/v1/dataset/covid19',
-  production: 'http://localhost:3000',
+  // production: 'http://localhost:3000',
+  production: 'http://glicbox.com/covid19',
   token: process.env.VUE_APP_TOKEN
 }
 
