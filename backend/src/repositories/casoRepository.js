@@ -36,16 +36,16 @@ export default class CasoRepository {
 
     const { city, state } = filter
 
-    let query = ` AND lower(city) LIKE '${city.toLowerCase()}%' `
+    let params = [`${city.toLowerCase()}%`]
+    let query = ` AND lower(city) LIKE ? `
     if (state) {
-      query += ` AND state = '${state}' `
+      query += ` AND state = ? `
+      params.push(state)
     }
 
-    console.log('query', query)
-
-    const lastDate = await this.db.all('SELECT MAX(date) AS date FROM casos')
-    const rows = await this.db.all(`SELECT * FROM casos WHERE date = '${lastDate[0].date}' ${query} ORDER BY city, state `)
-
+    // console.log('query', query)
+    // const lastDate = await this.db.all('SELECT MAX(date) AS date FROM casos')
+    const rows = await this.db.all(`SELECT * FROM casos WHERE is_last = 'True' ${query} ORDER BY city, state `, params)
     const dados = {
       results: rows
     }
